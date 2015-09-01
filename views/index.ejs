@@ -1,0 +1,58 @@
+<html>
+<head>
+	<title>Epic Button</title>
+	<style type="text/css">
+		h1, p {
+			text-align: center;
+		}
+		button {
+			display: block;
+			margin: 0 auto;
+		}
+		#epicButt {
+			background-color: blue;
+			color: white;
+			font-weight: bold;
+			width: 200px;
+			height: 50px;
+			margin-bottom: 30px;
+			border-radius: 15px;
+		}
+		#resetButt {
+			background-color: red;
+			color: white;
+			font-weight: bold;
+		}
+	</style>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+
+    		$('#message').html("The button has been pushed 0 time(s)");
+
+    		var socket = io.connect();
+
+    		$('#epicButt').click(function(){
+    			socket.emit('button_pushed');
+    		});
+    		socket.on('numb_times', function(data){
+    			$('#message').html("The button has been pushed "+ data.response+" time(s)");
+    		});
+    		$('#resetButt').click(function(){
+    			socket.emit('reset_pushed');
+    		});
+    		socket.on('counter_reset', function(data){
+    			$('#message').html("The button has been pushed "+ data.response+" time(s)");
+    		});
+    	});
+
+    </script>
+</head>
+<body>
+	<h1 id='message'></h1>
+	<p>Push the button to update the count!</p>
+	<button id='epicButt'>Push the epic button</button>
+	<button id='resetButt'>Reset Count</button>
+</body>
+</html>
